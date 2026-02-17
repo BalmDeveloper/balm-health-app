@@ -1,0 +1,80 @@
+{
+  "expo": {
+    "name": "Balm.ai",
+    "slug": "balm-mobile-app",
+    "scheme": [
+      "balmdotai",
+      "com.googleusercontent.apps.338310309485-9p8qv36u3luoo7fpr7u0vbvr23ei2ri1"
+    ],
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "icon": "./public/Images/balm icon.png",
+    "splash": {
+      "image": "./public/Images/balm logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "balmdotai",
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Balm.ai uses your location to find nearby healthcare providers and wellness services.",
+        "ITSAppUsesNonExemptEncryption": false,
+        "UIBackgroundModes": []
+      },
+      "buildNumber": "32",
+      "config": {
+        "usesNonExemptEncryption": false
+      },
+      "entitlements": {}
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./public/Images/balm icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.balmdotai.app",
+      "versionCode": 29
+    },
+    "web": {
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-asset",
+      "expo-font",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Balm.ai needs camera access to take profile pictures."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Balm.ai needs access to your photos to select profile pictures."
+        }
+      ]
+    ],
+    "extra": {
+      "firebase": {
+        "projectId": "balmaiapp",
+        "storageBucket": "balmaiapp.firebasestorage.app",
+        "messagingSenderId": "338310309485",
+        "appId": "1:338310309485:ios:8a6d6927f0a20dd8410164"
+      },
+      "eas": {
+        "projectId": "3e1b3e5c-da3b-4de0-8cfa-3d8127a41aac"
+      }
+    },
+    "owner": "balmhealth",
+    "runtimeVersion": "1.0.0",
+    "updates": {
+      "url": "https://u.expo.dev/3e1b3e5c-da3b-4de0-8cfa-3d8127a41aac"
+    }
+  }
+}

@@ -1,0 +1,125 @@
+const GEMINI_API_KEY = process.env.EXPO_PUBLIC_GEMINI_API_KEY;
+const GEMINI_MODEL =
+  process.env.EXPO_PUBLIC_GEMINI_MODEL ?? 'gemini-1.5-flash-latest';
+
+const GEMINI_MODEL_FALLBACKS = Array.from(
+  new Set(
+    [
+      GEMINI_MODEL,
+      'gemini-1.5-flash',
+      'gemini-1.5-pro',
+      'gemini-pro',
+    ].filter(Boolean)
+  )
+);
+
+function buildModelUrl(model) {
+  return `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`;
+}
+
+function buildHeaders() {
+  return {
+    'Content-Type': 'application/json',
+  };
+}
+
+function normalizeConversation(messages = []) {
+  return messages.map((message) => {
+    if (message?.parts) {
+      return message;
+    }
+
+    return {
+      role: message.role ?? (message.isBot ? 'model' : 'user'),
+      parts: [{ text: message.text ?? message.content ?? '' }],
+    };
+  });
+}
+
+async function callGemini(model, body) {
+  const url = buildModelUrl(model);
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: buildHeaders(),
+    body: JSON.stringify(body),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    const error = new Error(
+      `Gemini request failed for model ${model}: ${response.status} ${response.statusText} — ${errorText}`
+    );
+    error.status = response.status;
+    error.model = model;
+    throw error;
+  }
+
+  const data = await response.json();
+  const candidate = data?.candidates?.[0];
+  const parts = candidate?.content?.parts ?? [];
+  const text = parts
+    .map((part) => part.text)
+    .filter(Boolean)
+    .join('\n');
+
+  if (!text) {
+    throw new Error(`Gemini returned an empty response for model ${model}.`);
+  }
+
+  return {
+    text,
+    raw: data,
+  };
+}
+
+export async function generateGeminiResponse(conversation = [], options = {}) {
+  if (!GEMINI_API_KEY) {
+    throw new Error('Gemini API key not configured. Set EXPO_PUBLIC_GEMINI_API_KEY in your .env file.');
+  }
+
+  const contents = normalizeConversation(conversation);
+
+  const body = {
+    contents,
+    generationConfig: {
+      temperature: options.temperature ?? 0.7,
+      maxOutputTokens: options.maxOutputTokens ?? 512,
+      topK: options.topK ?? 32,
+      topP: options.topP ?? 0.95,
+    },
+  };
+
+  if (options.systemInstruction) {
+    body.systemInstruction = {
+      parts: [{ text: options.systemInstruction }],
+    };
+  }
+
+  const explicitModel = options.model;
+  const candidateModels = Array.from(
+    new Set(
+      [explicitModel, ...GEMINI_MODEL_FALLBACKS].filter(Boolean)
+    )
+  );
+
+  let lastError;
+
+  for (const model of candidateModels) {
+    try {
+      const result = await callGemini(model, body);
+      return result;
+    } catch (error) {
+      lastError = error;
+      if (error.status !== 404) {
+        throw error;
+      }
+    }
+  }
+
+  if (lastError) {
+    throw lastError;
+  }
+
+  throw new Error('Gemini request failed: no models available to fulfill the request.');
+}

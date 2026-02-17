@@ -1,0 +1,73 @@
+{
+  "cli": {
+    "version": ">= 9.2.0",
+    "appVersionSource": "local"
+  },
+  "build": {
+    "development": {
+      "env": {
+        "EXPO_NO_CAPABILITY_SYNC": "1"
+      },
+      "developmentClient": true,
+      "distribution": "internal",
+      "ios": {
+        "simulator": true
+      }
+    },
+    "preview": {
+      "env": {
+        "EXPO_NO_CAPABILITY_SYNC": "1"
+      },
+      "distribution": "internal",
+      "ios": {
+        "simulator": false
+      }
+    },
+    "production": {
+      "env": {
+        "EXPO_NO_CAPABILITY_SYNC": "1"
+      },
+      "distribution": "store",
+      "android": {
+        "autoIncrement": "versionCode",
+        "buildType": "apk"
+      },
+      "ios": {
+        "autoIncrement": "buildNumber"
+      }
+    },
+    "testflight": {
+      "env": {
+        "EXPO_NO_CAPABILITY_SYNC": "1",
+        "APP_ENV": "production"
+      },
+      "channel": "production",
+      "distribution": "store",
+      "ios": {
+        "simulator": false,
+        "autoIncrement": "buildNumber",
+        "resourceClass": "m-medium"
+      }
+    }
+  },
+  "submit": {
+    "production": {
+      "ios": {
+        "appleId": "balmtechnologies@gmail.com",
+        "ascAppId": "128378144",
+        "appleTeamId": "8GGGQS2NF7"
+      },
+      "android": {
+        "serviceAccountKeyPath": "./google-services.json",
+        "track": "production"
+      }
+    },
+    "testflight": {
+      "ios": {
+        "appleId": "balmtechnologies@gmail.com",
+        "ascAppId": "128378144",
+        "appleTeamId": "8GGGQS2NF7"
+      }
+    }
+  }
+}

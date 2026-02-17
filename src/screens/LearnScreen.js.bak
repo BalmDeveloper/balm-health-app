@@ -1,0 +1,689 @@
+import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  SafeAreaView,
+} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import AppHeader from '../components/AppHeader';
+import quizData from '../data/quizData';
+
+export default function LearnScreen({ navigation }) {
+  const total = quizData.length;
+  const [index, setIndex] = useState(0);
+  const [score, setScore] = useState(0);
+  const [answered, setAnswered] = useState(false);
+  const [showResult, setShowResult] = useState(false);
+
+  const current = quizData[index];
+
+  const handleSelect = (correct) => {
+    if (answered) return;
+    if (correct) setScore((s) => s + 1);
+    setAnswered(true);
+  };
+
+  const next = () => {
+    if (index + 1 === total) {
+      setShowResult(true);
+      return;
+    }
+    setIndex((i) => i + 1);
+    setAnswered(false);
+  };
+
+  const reset = () => {
+    setIndex(0);
+    setScore(0);
+    setAnswered(false);
+    setShowResult(false);
+  };
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <AppHeader navigation={navigation} title="Healthy Habits Quiz" />
+
+      {showResult ? (
+        <View style={styles.center}>
+          <Ionicons name="trophy" size={64} color="#f59e0b" />
+          <Text style={styles.resultText}>You scored {score} / {total}</Text>
+          <TouchableOpacity style={styles.button} onPress={reset}>
+            <Text style={styles.btnText}>Retake Quiz</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <View style={styles.quizContainer}>
+          <Text style={styles.qCount}>Question {index + 1} / {total}</Text>
+          <Text style={styles.question}>{current.q}</Text>
+
+          {current.a.map((opt, i) => (
+            <TouchableOpacity
+              key={i}
+              style={[
+                styles.option,
+                answered && opt.correct && styles.correctOption,
+                answered && !opt.correct && styles.dimOption,
+              ]}
+              onPress={() => handleSelect(opt.correct)}
+              disabled={answered}
+            >
+              <Text style={styles.optText}>{opt.text}</Text>
+            </TouchableOpacity>
+          ))}
+
+          {answered && (
+            <>
+              {current.info && <Text style={styles.info}>{current.info}</Text>}
+              <TouchableOpacity style={styles.nextBtn} onPress={next}>
+                <Text style={styles.btnText}>{index + 1 === total ? 'See Result' : 'Next'}</Text>
+              </TouchableOpacity>
+            </>
+          )}
+        </View>
+      )}
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1 },
+  quizContainer: { padding: 20 },
+  qCount: { fontSize: 14, color: '#6b7280', marginBottom: 8 },
+  question: { fontSize: 20, fontWeight: '600', marginBottom: 24 },
+  option: {
+    backgroundColor: '#e5e7eb',
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 12,
+  },
+  correctOption: { backgroundColor: '#d1fae5' },
+  dimOption: { opacity: 0.6 },
+  optText: { fontSize: 16 },
+  info: { fontSize: 14, color: '#374151', marginTop: 12, marginBottom: 16 },
+  nextBtn: {
+    backgroundColor: '#00008b',
+    paddingVertical: 12,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  resultText: { fontSize: 22, fontWeight: '700', marginVertical: 16 },
+  button: {
+    backgroundColor: '#00008b',
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 12,
+  },
+  btnText: { color: '#fff', fontWeight: '600' },
+});
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  SafeAreaView,
+} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import AppHeader from '../components/AppHeader';
+import quizData from '../data/quizData';
+
+export default function LearnScreen({ navigation }) {
+  const total = quizData.length;
+  const [index, setIndex] = useState(0);
+  const [score, setScore] = useState(0);
+  const [answered, setAnswered] = useState(false);
+  const [showResult, setShowResult] = useState(false);
+
+  const current = quizData[index];
+
+  const handleSelect = (correct) => {
+    if (answered) return;
+    if (correct) setScore((s) => s + 1);
+    setAnswered(true);
+  };
+
+  const next = () => {
+    if (index + 1 === total) {
+      setShowResult(true);
+      return;
+    }
+    setIndex((i) => i + 1);
+    setAnswered(false);
+  };
+
+  const reset = () => {
+    setIndex(0);
+    setScore(0);
+    setAnswered(false);
+    setShowResult(false);
+  };
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <AppHeader navigation={navigation} title="Healthy Habits Quiz" />
+
+      {showResult ? (
+        <View style={styles.center}>
+          <Ionicons name="trophy" size={64} color="#f59e0b" />
+          <Text style={styles.resultText}>You scored {score} / {total}</Text>
+          <TouchableOpacity style={styles.button} onPress={reset}>
+            <Text style={styles.btnText}>Retake Quiz</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <View style={styles.quizContainer}>
+          <Text style={styles.qCount}>Question {index + 1} / {total}</Text>
+          <Text style={styles.question}>{current.q}</Text>
+
+          {current.a.map((opt, i) => (
+            <TouchableOpacity
+              key={i}
+              style={[
+                styles.option,
+                answered && opt.correct && styles.correctOption,
+                answered && !opt.correct && styles.dimOption,
+              ]}
+              onPress={() => handleSelect(opt.correct)}
+              disabled={answered}
+            >
+              <Text style={styles.optText}>{opt.text}</Text>
+            </TouchableOpacity>
+          ))}
+
+          {answered && (
+            <>
+              {current.info && <Text style={styles.info}>{current.info}</Text>}
+              <TouchableOpacity style={styles.nextBtn} onPress={next}>
+                <Text style={styles.btnText}>{index + 1 === total ? 'See Result' : 'Next'}</Text>
+              </TouchableOpacity>
+            </>
+          )}
+        </View>
+      )}
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1 },
+  quizContainer: { padding: 20 },
+  qCount: { fontSize: 14, color: '#6b7280', marginBottom: 8 },
+  question: { fontSize: 20, fontWeight: '600', marginBottom: 24 },
+  option: {
+    backgroundColor: '#e5e7eb',
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 12,
+  },
+  correctOption: { backgroundColor: '#d1fae5' },
+  dimOption: { opacity: 0.6 },
+  optText: { fontSize: 16 },
+  info: { fontSize: 14, color: '#374151', marginTop: 12, marginBottom: 16 },
+  nextBtn: {
+    backgroundColor: '#00008b',
+    paddingVertical: 12,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  resultText: { fontSize: 22, fontWeight: '700', marginVertical: 16 },
+  button: {
+    backgroundColor: '#00008b',
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 12,
+  },
+  btnText: { color: '#fff', fontWeight: '600' },
+});
+
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  SafeAreaView,
+} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import AppHeader from '../components/AppHeader';
+import quizData from '../data/quizData';
+
+export default function LearnScreen({ navigation }) {
+  const total = quizData.length;
+  const [index, setIndex] = useState(0);
+  const [score, setScore] = useState(0);
+  const [answered, setAnswered] = useState(false);
+  const [showResult, setShowResult] = useState(false);
+
+  const current = quizData[index];
+
+  const handleSelect = (correct) => {
+    if (answered) return;
+    if (correct) setScore((s) => s + 1);
+    setAnswered(true);
+  };
+
+  const next = () => {
+    if (index + 1 === total) {
+      setShowResult(true);
+      return;
+    }
+    setIndex((i) => i + 1);
+    setAnswered(false);
+  };
+
+  const reset = () => {
+    setIndex(0);
+    setScore(0);
+    setAnswered(false);
+    setShowResult(false);
+  };
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <AppHeader navigation={navigation} title="Healthy Habits Quiz" />
+
+      {showResult ? (
+        <View style={styles.center}>
+          <Ionicons name="trophy" size={64} color="#f59e0b" />
+          <Text style={styles.resultText}>You scored {score} / {total}</Text>
+          <TouchableOpacity style={styles.button} onPress={reset}>
+            <Text style={styles.btnText}>Retake Quiz</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <View style={styles.quizContainer}>
+          <Text style={styles.qCount}>Question {index + 1} / {total}</Text>
+          <Text style={styles.question}>{current.q}</Text>
+
+          {current.a.map((opt, i) => (
+            <TouchableOpacity
+              key={i}
+              style={[
+                styles.option,
+                answered && opt.correct && styles.correctOption,
+                answered && !opt.correct && styles.dimOption,
+              ]}
+              onPress={() => handleSelect(opt.correct)}
+              disabled={answered}
+            >
+              <Text style={styles.optText}>{opt.text}</Text>
+            </TouchableOpacity>
+          ))}
+
+          {answered && (
+            <>
+              {current.info && <Text style={styles.info}>{current.info}</Text>}
+              <TouchableOpacity style={styles.nextBtn} onPress={next}>
+                <Text style={styles.btnText}>{index + 1 === total ? 'See Result' : 'Next'}</Text>
+              </TouchableOpacity>
+            </>
+          )}
+        </View>
+      )}
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1 },
+  quizContainer: { padding: 20 },
+  qCount: { fontSize: 14, color: '#6b7280', marginBottom: 8 },
+  question: { fontSize: 20, fontWeight: '600', marginBottom: 24 },
+  option: {
+    backgroundColor: '#e5e7eb',
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 12,
+  },
+  correctOption: { backgroundColor: '#d1fae5' },
+  dimOption: { opacity: 0.6 },
+  optText: { fontSize: 16 },
+  info: { fontSize: 14, color: '#374151', marginTop: 12, marginBottom: 16 },
+  nextBtn: {
+    backgroundColor: '#00008b',
+    paddingVertical: 12,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  resultText: { fontSize: 22, fontWeight: '700', marginVertical: 16 },
+  button: {
+    backgroundColor: '#00008b',
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 12,
+  },
+  btnText: { color: '#fff', fontWeight: '600' },
+});
+
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  SafeAreaView,
+} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import AppHeader from '../components/AppHeader';
+import quizData from '../data/quizData';
+
+export default function LearnScreen({ navigation }) {
+  const total = quizData.length;
+  const [index, setIndex] = useState(0);
+  const [score, setScore] = useState(0);
+  const [answered, setAnswered] = useState(false);
+  const [showResult, setShowResult] = useState(false);
+
+  const current = quizData[index];
+
+  const handleSelect = (correct) => {
+    if (answered) return;
+    if (correct) setScore((s) => s + 1);
+    setAnswered(true);
+  };
+
+  const next = () => {
+    if (index + 1 === total) {
+      setShowResult(true);
+      return;
+    }
+    setIndex((i) => i + 1);
+    setAnswered(false);
+  };
+
+  const reset = () => {
+    setIndex(0);
+    setScore(0);
+    setAnswered(false);
+    setShowResult(false);
+  };
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <AppHeader navigation={navigation} title="Healthy Habits Quiz" />
+
+      {showResult ? (
+        <View style={styles.center}>
+          <Ionicons name="trophy" size={64} color="#f59e0b" />
+          <Text style={styles.resultText}>You scored {score} / {total}</Text>
+          <TouchableOpacity style={styles.button} onPress={reset}>
+            <Text style={styles.btnText}>Retake Quiz</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <View style={styles.quizContainer}>
+          <Text style={styles.qCount}>Question {index + 1} / {total}</Text>
+          <Text style={styles.question}>{current.q}</Text>
+
+          {current.a.map((opt, i) => (
+            <TouchableOpacity
+              key={i}
+              style={[
+                styles.option,
+                answered && opt.correct && styles.correctOption,
+                answered && !opt.correct && styles.dimOption,
+              ]}
+              onPress={() => handleSelect(opt.correct)}
+              disabled={answered}
+            >
+              <Text style={styles.optText}>{opt.text}</Text>
+            </TouchableOpacity>
+          ))}
+
+          {answered && (
+            <>
+              {current.info && <Text style={styles.info}>{current.info}</Text>}
+              <TouchableOpacity style={styles.nextBtn} onPress={next}>
+                <Text style={styles.btnText}>{index + 1 === total ? 'See Result' : 'Next'}</Text>
+              </TouchableOpacity>
+            </>
+          )}
+        </View>
+      )}
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1 },
+  quizContainer: { padding: 20 },
+  qCount: { fontSize: 14, color: '#6b7280', marginBottom: 8 },
+  question: { fontSize: 20, fontWeight: '600', marginBottom: 24 },
+  option: {
+    backgroundColor: '#e5e7eb',
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 12,
+  },
+  correctOption: { backgroundColor: '#d1fae5' },
+  dimOption: { opacity: 0.6 },
+  optText: { fontSize: 16 },
+  info: { fontSize: 14, color: '#374151', marginTop: 12, marginBottom: 16 },
+  nextBtn: {
+    backgroundColor: '#00008b',
+    paddingVertical: 12,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  resultText: { fontSize: 22, fontWeight: '700', marginVertical: 16 },
+  button: {
+    backgroundColor: '#00008b',
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 12,
+  },
+  btnText: { color: '#fff', fontWeight: '600' },
+});
+import quizData from '../data/quizData';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  SafeAreaView,
+} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import AppHeader from '../components/AppHeader';
+
+// Local fallback removed – using external quizData
+  {
+    q: 'What nutrient is especially important for women during pregnancy to prevent neural tube defects?',
+    a: [
+      { text: 'Vitamin D', correct: false },
+      { text: 'Folic acid', correct: true },
+      { text: 'Iron', correct: false },
+      { text: 'Vitamin C', correct: false },
+    ],
+  },
+  {
+    q: 'Which syndrome involves insulin resistance and can cause irregular periods?',
+    a: [
+      { text: 'PCOS', correct: true },
+      { text: 'PID', correct: false },
+      { text: 'Endometriosis', correct: false },
+      { text: 'Menopause', correct: false },
+    ],
+  },
+  {
+    q: 'Which macronutrient supplies 4 kcal per gram and is the body’s preferred energy source?',
+    a: [
+      { text: 'Protein', correct: false },
+      { text: 'Fat', correct: false },
+      { text: 'Carbohydrate', correct: true },
+      { text: 'Alcohol', correct: false },
+    ],
+  },
+  {
+    q: 'In integrative medicine, which modality uses thin needles to stimulate specific points on the body?',
+    a: [
+      { text: 'Reiki', correct: false },
+      { text: 'Acupuncture', correct: true },
+      { text: 'Yoga', correct: false },
+      { text: 'Meditation', correct: false },
+    ],
+  },
+  {
+    q: 'Optimal pre-conception folate intake reduces the risk of which fetal defect?',
+    a: [
+      { text: 'Cleft palate', correct: false },
+      { text: 'Spina bifida', correct: true },
+      { text: 'Club foot', correct: false },
+      { text: 'Tetralogy of Fallot', correct: false },
+    ],
+  },
+  {
+    q: 'Which mineral supports oxygen transport and is often low in women of reproductive age?',
+    a: [
+      { text: 'Calcium', correct: false },
+      { text: 'Iron', correct: true },
+      { text: 'Potassium', correct: false },
+      { text: 'Sodium', correct: false },
+    ],
+  },
+  {
+    q: 'Which hormone surge triggers ovulation in a typical menstrual cycle?',
+    a: [
+      { text: 'LH', correct: true },
+      { text: 'TSH', correct: false },
+      { text: 'FSH', correct: false },
+      { text: 'Prolactin', correct: false },
+    ],
+  },
+  {
+    q: 'A diet high in _______ can help manage insulin resistance in PCOS.',
+    a: [
+      { text: 'Refined carbs', correct: false },
+      { text: 'High-fiber foods', correct: true },
+      { text: 'Trans fats', correct: false },
+      { text: 'Added sugars', correct: false },
+    ],
+  },
+  {
+    q: 'Which vitamin enhances calcium absorption and is made by skin when exposed to sunlight?',
+    a: [
+      { text: 'Vitamin A', correct: false },
+      { text: 'Vitamin D', correct: true },
+      { text: 'Vitamin E', correct: false },
+      { text: 'Vitamin K', correct: false },
+    ],
+  },
+  {
+    q: 'The Mediterranean diet is considered heart-healthy because it is rich in _______.',
+    a: [
+      { text: 'Saturated fat', correct: false },
+      { text: 'Omega-3 fatty acids', correct: true },
+      { text: 'Added sugars', correct: false },
+      { text: 'Processed meats', correct: false },
+    ],
+  },
+];
+
+export default function LearnScreen({ navigation }) {
+  const [index, setIndex] = useState(0);
+  const [score, setScore] = useState(0);
+  const [showResult, setShowResult] = useState(false);
+
+  const current = quizData[index];
+
+  const handleAnswer = (correct) => {
+    if (correct) setScore((s) => s + 1);
+    setShowAnswered(true);
+    setSelectedCorrect(correct);
+  };
+
+  const nextQuestion = () => {
+    const next = index + 1;
+    setShowAnswered(false);
+    setSelectedCorrect(null);
+    if (next < quizData.length) {
+      setIndex(next);
+      } else {
+      setShowResult(true);
+    }
+  };
+
+  const [showAnswered, setShowAnswered] = useState(false);
+  const [selectedCorrect, setSelectedCorrect] = useState(null);
+
+  const reset = () => {
+    setIndex(0);
+    setScore(0);
+    setShowResult(false);
+  };
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <AppHeader navigation={navigation} title="Quick Quiz" />
+
+      {showResult ? (
+        <View style={styles.center}>
+          <Ionicons name="trophy" size={64} color="#f59e0b" />
+          <Text style={styles.resultText}>You scored {score} / {QUIZ.length}</Text>
+          <TouchableOpacity style={styles.button} onPress={reset}>
+            <Text style={styles.btnText}>Retake Quiz</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <View style={styles.quizContainer}>
+          <Text style={styles.qCount}>Question {index + 1} / {QUIZ.length}</Text>
+          <Text style={styles.question}>{current.q}</Text>
+          {current.a.map((opt, i) => (
+            <TouchableOpacity
+              key={i}
+              style={[
+                styles.option,
+                showAnswered && opt.correct && { backgroundColor: '#d1fae5' },
+                showAnswered && !opt.correct && { opacity: 0.6 },
+              ]}
+              onPress={() => !showAnswered && handleAnswer(opt.correct)}
+              disabled={showAnswered}
+            >
+              <Text style={styles.optText}>{opt.text}</Text>
+            </TouchableOpacity>
+          ))}
+
+          {showAnswered && (
+            <>
+              <Text style={styles.info}>{current.info}</Text>
+              <TouchableOpacity style={styles.nextBtn} onPress={nextQuestion}>
+                <Text style={styles.btnText}>{index + 1 === quizData.length ? 'See Result' : 'Next'}</Text>
+              </TouchableOpacity>
+            </>
+          )}
+            <TouchableOpacity
+              key={i}
+              style={styles.option}
+              onPress={() => handleAnswer(opt.correct)}
+            >
+              <Text style={styles.optText}>{opt.text}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      )}
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1 },
+  quizContainer: { padding: 20 },
+  qCount: { fontSize: 14, color: '#6b7280', marginBottom: 8 },
+  question: { fontSize: 20, fontWeight: '600', marginBottom: 24 },
+  option: {
+    backgroundColor: '#e5e7eb',
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 12,
+  },
+  optText: { fontSize: 16 },
+  center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  resultText: { fontSize: 22, fontWeight: '700', marginVertical: 16 },
+  button: {
+    backgroundColor: '#00008b',
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 12,
+  },
+  btnText: { color: '#fff', fontWeight: '600' },
+});
