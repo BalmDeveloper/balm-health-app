@@ -13,7 +13,6 @@ import RewardsScreen from '../screens/RewardsScreen';
 import LabsScreen from '../screens/LabsScreen';
 import LifestyleHistoryScreen from '../screens/LifestyleHistoryScreen';
 import ProvidersScreen from '../screens/ProvidersScreen';
-import IntegrationsScreen from '../screens/IntegrationsScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import CommunityScreen from '../screens/CommunityScreen';
 import PeriodTrackingScreen from '../screens/PeriodTrackingScreen';
@@ -104,7 +103,6 @@ export default function MainTabNavigator() {
       <Tab.Screen name="ProfileDetail" component={ProfileScreen} options={{ tabBarButton: () => null, headerShown: false }} />
       <Tab.Screen name="LifestyleHistory" component={LifestyleHistoryScreen} options={{ tabBarButton: () => null, headerShown: false }} />
       <Tab.Screen name="Providers" component={ProvidersScreen} options={{ tabBarButton: () => null, headerShown: false }} />
-      <Tab.Screen name="Integrations" component={IntegrationsScreen} options={{ tabBarButton: () => null, headerShown: false }} />
       <Tab.Screen name="Settings" component={SettingsScreen} options={{ tabBarButton: () => null, headerShown: false }} />
       <Tab.Screen name="PeriodTracking" component={PeriodTrackingScreen} options={{ tabBarButton: () => null, headerShown: false }} />
       <Tab.Screen name="HealthProfile" component={HealthProfileScreen} options={{ tabBarButton: () => null, headerShown: false }} />

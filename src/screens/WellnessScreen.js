@@ -23,7 +23,6 @@ import { useTheme } from '../context/ThemeContext';
 import { doc, getDoc, collection, query, orderBy, getDocs, limit, setDoc } from 'firebase/firestore';
 import { auth, db } from '../config/firebase';
 import { moodService, wellnessService, activityService } from '../services/firestore';
-import HealthKitService from '../services/HealthKitService';
 import Svg, { G, Path, Circle, Line, Text as SvgText } from 'react-native-svg';
 
 const getScreenDimensions = () => {
@@ -145,46 +144,6 @@ export default function WellnessScreen({ navigation }) {
       console.log('✅ Rewards data loaded');
     } catch (error) {
       console.error('❌ Error loading rewards data:', error);
-    }
-  };
-
-  // Check HealthKit connection and initialize if needed
-  const checkHealthKitConnection = async () => {
-    try {
-      // Only try HealthKit on iOS devices in development builds
-      if (Platform.OS !== 'ios') {
-        console.log('HealthKit is only available on iOS');
-        setHealthKitConnected(false);
-        return;
-      }
-
-      if (!HealthKitService.isLibraryAvailable()) {
-        console.log('HealthKit library not available - running in Expo Go or missing dependencies');
-        setHealthKitConnected(false);
-        return;
-      }
-
-      if (!HealthKitService.isAvailable()) {
-        console.log('HealthKit not available on this device');
-        setHealthKitConnected(false);
-        return;
-      }
-
-      // Check if already connected
-      const authStatus = await HealthKitService.getAuthorizationStatus('steps');
-      if (authStatus.sharingAuthorized) {
-        setHealthKitConnected(true);
-        console.log('HealthKit already connected');
-        return;
-      }
-
-      // Try to initialize HealthKit
-      await HealthKitService.initialize();
-      setHealthKitConnected(true);
-      console.log('HealthKit connected successfully');
-    } catch (error) {
-      console.log('HealthKit connection not available (expected in Expo Go):', error.message);
-      setHealthKitConnected(false);
     }
   };
 
@@ -481,7 +440,6 @@ export default function WellnessScreen({ navigation }) {
   useEffect(() => {
     loadRewardsData();
     updateDailyStreak();
-    checkHealthKitConnection();
   }, []);
 
   // Check for steps goal when steps change
@@ -2280,11 +2238,6 @@ const styles = StyleSheet.create({
     marginTop: 8,
     fontStyle: 'italic',
   },
-  // HealthKit Integration Styles
-  healthKitToggle: {
-    marginVertical: 12,
-    paddingHorizontal: 4,
-  },
   toggleRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -2329,28 +2282,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 16,
   },
-  loadingText: {
-    fontSize: 14,
-    fontStyle: 'italic',
-  },
   dataSourceText: {
     fontSize: 12,
     fontStyle: 'italic',
     marginTop: 8,
     textAlign: 'center',
-  },
-  healthKitNotice: {
-    marginVertical: 12,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    backgroundColor: '#f0f8ff',
-    borderRadius: 8,
-    borderLeftWidth: 3,
-    borderLeftColor: '#4169e1',
-  },
-  healthKitNoticeText: {
-    fontSize: 12,
-    lineHeight: 16,
   },
   bmiSourceContainer: {
     flexDirection: 'row',

@@ -11,9 +11,9 @@ import LoginForm from '../screens/LoginForm';
 import ForgotPasswordForm from '../screens/ForgotPasswordForm';
 import ProfileScreen from '../screens/ProfileScreen';
 import MainTabNavigator from './MainTabNavigator';
+import ProfileScreen from '../screens/ProfileScreen';
 import LifestyleHistoryScreen from '../screens/LifestyleHistoryScreen';
 import ProvidersScreen from '../screens/ProvidersScreen';
-import IntegrationsScreen from '../screens/IntegrationsScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import LabsScreen from '../screens/LabsScreen';
 import CommunityScreen from '../screens/CommunityScreen';
@@ -78,7 +78,6 @@ export default function AppNavigator() {
           <Stack.Screen name="ProfileDetail" component={ProfileScreen} />
           <Stack.Screen name="LifestyleHistory" component={LifestyleHistoryScreen} />
           <Stack.Screen name="Providers" component={ProvidersScreen} />
-          <Stack.Screen name="Integrations" component={IntegrationsScreen} />
           <Stack.Screen name="Settings" component={SettingsScreen} />
           <Stack.Screen name="Labs" component={LabsScreen} />
           <Stack.Screen name="Community" component={CommunityScreen} />
