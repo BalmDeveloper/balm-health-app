@@ -21,7 +21,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "balmdotai",
-      "googleServicesFile": "./GoogleService-Info.plist",
+      "googleServicesFile": "./ios/Balmai/GoogleService-Info.plist",
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "Balm.ai uses your location to find nearby healthcare providers and wellness services.",
         "ITSAppUsesNonExemptEncryption": false,
